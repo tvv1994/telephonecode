@@ -1,13 +1,14 @@
 package telephoneCode;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import telephoneCode.model.TelephoneCode;
 import telephoneCode.repository.Repository;
 import telephoneCode.utils.JsonToMap;
+import org.slf4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class GreetingController {
     @Autowired
     private Repository repository;
+    private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
 
 //    @GetMapping("/greeting")
 //    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
@@ -46,6 +48,7 @@ public class GreetingController {
                 return ResponseEntity.ok().body(e.getTelephoneCode());
             }
         }
+        logger.info("/code");
         return ResponseEntity.notFound().build();
     }
 
@@ -62,9 +65,10 @@ public class GreetingController {
                 t.setCountry(e.getValue());
                 t.setTelephoneCode(map2.get(e.getKey()));
                 repository.save(t);
+                logger.info("reload");
             }
         } catch (MalformedURLException e) {
-
+            logger.error(e.toString());
             return e.toString();
         }
 
