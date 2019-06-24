@@ -1,5 +1,8 @@
 package telephoneCode;
 
+
+
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import telephoneCode.model.TelephoneCode;
 import telephoneCode.repository.Repository;
 import telephoneCode.utils.JsonToMap;
-import org.slf4j.Logger;
+
 
 import java.net.MalformedURLException;
 import java.util.Map;
@@ -48,7 +51,7 @@ public class GreetingController {
                 return ResponseEntity.ok().body(e.getTelephoneCode());
             }
         }
-        logger.info("/code");
+        logger.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return ResponseEntity.notFound().build();
     }
 
