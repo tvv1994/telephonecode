@@ -11,6 +11,7 @@ import java.util.Map;
 
 @Component
 public class DataInit implements ApplicationRunner {
+
     private Repository repository;
 
     @Autowired

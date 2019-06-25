@@ -1,5 +1,6 @@
 package telephoneCode.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import telephoneCode.model.TelephoneCode;
@@ -10,9 +11,11 @@ import java.util.Map;
 
 @Component
 public class ScheduleTask {
+
+    @Autowired
     private Repository repository;
 
-    @Scheduled(cron = "0 2 * * * ?")
+    @Scheduled(cron = "0 0/2 * * * ?")
     public void reload(){
         try {
             JsonToMap json = new JsonToMap();

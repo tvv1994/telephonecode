@@ -18,6 +18,7 @@ import java.util.Map;
 
 @Controller
 public class GreetingController {
+
     @Autowired
     private Repository repository;
     private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
@@ -68,7 +69,7 @@ public class GreetingController {
                 t.setCountry(e.getValue());
                 t.setTelephoneCode(map2.get(e.getKey()));
                 repository.save(t);
-                logger.info("reload");
+                logger.info("reload {} : {}", e.getKey(), e.getValue());
             }
         } catch (MalformedURLException e) {
             logger.error(e.toString());
