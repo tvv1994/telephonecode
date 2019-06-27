@@ -1,40 +1,29 @@
 package telephoneCode.utils;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
+
 import java.util.Map;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+@Service
 public class JsonToMap {
 
-    private URL RESOURCE1 =new URL("http://country.io/names.json");
-    private URL RESOURCE2 =new URL("http://country.io/phone.json");
+    private String RESOURCE1 = "http://country.io/names.json";
+    private String RESOURCE2 = "http://country.io/phone.json";
 
-    public JsonToMap() throws MalformedURLException {
+    @Autowired
+    private RestTemplate restTemplate;
+
+
+    public JsonToMap(){
     }
 
     public Map<String, String> createMapCountry() {
-        Map<String, String> mapCountry = new HashMap<>();
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapCountry = mapper.readValue(RESOURCE1, new TypeReference<Map<String, String>>(){});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return mapCountry;
+        return restTemplate.getForObject(RESOURCE1, Map.class);
     }
 
     public Map<String, String> createMapTelephone() {
-        Map<String, String> mapTelephone = new HashMap<>();
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapTelephone = mapper.readValue(RESOURCE2, new TypeReference<Map<String, String>>(){});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return mapTelephone;
+        return restTemplate.getForObject(RESOURCE2, Map.class);
     }
 }

@@ -12,6 +12,8 @@ import java.util.Map;
 @Component
 public class DataInit implements ApplicationRunner {
 
+    @Autowired
+    private JsonToMap jsonToMap;
     private Repository repository;
 
     @Autowired
@@ -24,9 +26,8 @@ public class DataInit implements ApplicationRunner {
         long count = repository.count();
 
         if(count==0){
-            JsonToMap json = new JsonToMap();
-            Map<String, String> map1 = json.createMapCountry();
-            Map<String, String> map2 = json.createMapTelephone();
+            Map<String, String> map1 = jsonToMap.createMapCountry();
+            Map<String, String> map2 = jsonToMap.createMapTelephone();
             for(Map.Entry<String,String> e: map1.entrySet()){
                 TelephoneCode t = new TelephoneCode();
                 t.setCountryCode(e.getKey());

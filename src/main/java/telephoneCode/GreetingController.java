@@ -7,13 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import telephoneCode.model.TelephoneCode;
 import telephoneCode.repository.Repository;
 import telephoneCode.utils.JsonToMap;
 
 
-import java.net.MalformedURLException;
 import java.util.Map;
 
 @Controller
@@ -21,6 +21,8 @@ public class GreetingController {
 
     @Autowired
     private Repository repository;
+    @Autowired
+    private JsonToMap jsonToMap;
     private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
 
 //    @GetMapping("/greeting")
@@ -58,22 +60,17 @@ public class GreetingController {
 
     @ResponseBody
     @PostMapping("/reload")
+    @Transactional
     public String reload(){
-        try {
-            JsonToMap json = new JsonToMap();
-            Map<String, String> map1 = json.createMapCountry();
-            Map<String, String> map2 = json.createMapTelephone();
-            for(Map.Entry<String,String> e: map1.entrySet()){
-                TelephoneCode t = new TelephoneCode();
-                t.setCountryCode(e.getKey());
-                t.setCountry(e.getValue());
-                t.setTelephoneCode(map2.get(e.getKey()));
-                repository.save(t);
-                logger.info("reload {} : {}", e.getKey(), e.getValue());
-            }
-        } catch (MalformedURLException e) {
-            logger.error(e.toString());
-            return e.toString();
+        Map<String, String> map1 = jsonToMap.createMapCountry();
+        Map<String, String> map2 = jsonToMap.createMapTelephone();
+        for(Map.Entry<String,String> e: map1.entrySet()){
+            TelephoneCode t = new TelephoneCode();
+            t.setCountryCode(e.getKey());
+            t.setCountry(e.getValue());
+            t.setTelephoneCode(map2.get(e.getKey()));
+            repository.save(t);
+            logger.info("reload {} : {}", e.getKey(), e.getValue());
         }
 
         return "The update is done!";
